@@ -1,0 +1,57 @@
+import { Button, Form, Offcanvas } from "react-bootstrap";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+
+function AppNavbar() {
+  return (
+    <Navbar expand="sm" className="mb-3" style={{ backgroundColor: "#22c749" }}>
+      <Container fluid>
+        <Navbar.Brand href="#">Stay Hard</Navbar.Brand>
+        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} />
+        <Navbar.Offcanvas
+          id={`offcanvasNavbar-expand-sm`}
+          aria-labelledby={`offcanvasNavbarLabel-expand-sm`}
+          placement="end"
+        >
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title id={`offcanvasNavbarLabel-expand-sm`}>
+              Offcanvas
+            </Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <Nav className="justify-content-end flex-grow-1 pe-3">
+              <NavDropdown
+                title="Workouts"
+                id={`offcanvasNavbarDropdown-expand-sm`}
+              >
+                <NavDropdown.Item href="/workouts">View</NavDropdown.Item>
+                <NavDropdown.Item href="/workouts/add">Add</NavDropdown.Item>
+              </NavDropdown>
+              <NavDropdown
+                title="Exercises"
+                id={`offcanvasNavbarDropdown-expand-sm`}
+              >
+                <NavDropdown.Item href="/exercises">View</NavDropdown.Item>
+                <NavDropdown.Item href="/exercises/add">Add</NavDropdown.Item>
+              </NavDropdown>
+              <Nav.Link href="/user">User</Nav.Link>
+            </Nav>
+            <Form className="d-flex">
+              <Form.Control
+                type="search"
+                placeholder="Find Workouts"
+                className="me-2"
+                aria-label="Search"
+              />
+              <Button variant="outline-success">Search</Button>
+            </Form>
+          </Offcanvas.Body>
+        </Navbar.Offcanvas>
+      </Container>
+    </Navbar>
+  );
+}
+
+export default AppNavbar;

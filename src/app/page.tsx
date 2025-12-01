@@ -1,66 +1,82 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { Card, Col, ListGroup, Row } from "react-bootstrap";
 import styles from "./page.module.css";
+import AppNavbar from "@/components/AppNavbar/AppNavbar";
+import { Workout } from "@/components/types";
+import { workout, workout2, workout3 } from "@/components/data";
+import { FaPlus } from "react-icons/fa";
+import Link from "next/link";
 
 export default function Home() {
+  const [userName, setUserName] = useState<string>("Enrico");
+  const [workouts, setWorkouts] = useState<Workout[]>([
+    workout,
+    workout2,
+    workout3,
+  ]);
+
   return (
-    <div className={styles.page}>
+    <>
+      <AppNavbar />
       <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
+        <Row>
+          <Col>
+            <h1>Hello, {userName}!</h1>
+          </Col>
+        </Row>
+        <hr />
+        <Row>
+          <h3>Your Workouts</h3>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+            <Card
+              style={{
+                width: "20rem",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "30px 0",
+              }}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+              <Link href="/workouts/add">
+                <FaPlus style={{ fontSize: "5rem" }} />
+              </Link>
+            </Card>
+
+            {workouts
+              ?.sort((a, b) => b.date.getDate() - a.date.getDate())
+              .map((workout, index) => (
+                <Card key={index} style={{ width: "20rem" }}>
+                  <Card.Header>
+                    <Card.Title>{workout?.name}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">
+                      {workout?.date.toLocaleDateString()}
+                    </Card.Subtitle>
+                  </Card.Header>
+                  <Card.Body>
+                    <Card.Text>{workout?.description}</Card.Text>
+
+                    <ListGroup>
+                      {workout?.exercises.map((exercise, index) => (
+                        <ListGroup.Item key={index}>
+                          <b>{exercise?.name}</b> | {exercise?.sets} -{" "}
+                          {exercise?.reps}
+                        </ListGroup.Item>
+                      ))}
+                    </ListGroup>
+                  </Card.Body>
+                  <Card.Footer>
+                    <Card.Link>Edit</Card.Link>
+                    <Card.Link>Remove</Card.Link>
+                  </Card.Footer>
+                </Card>
+              ))}
+          </div>
+        </Row>
+        <hr />
+        <Row></Row>
       </main>
-    </div>
+    </>
   );
 }
