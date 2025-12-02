@@ -9,7 +9,7 @@ export interface Workout {
   id: number;
   name: string;
   description: string;
-  date: Date;
+  date: string;
   userId: number;
   exercises: Exercise[];
   userName?: string;
