@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Card, Col, ListGroup, Row } from "react-bootstrap";
+import { useCallback, useEffect, useState } from "react";
+import { Card, Col, ListGroup, Row, ToastContainer } from "react-bootstrap";
 import styles from "./../page.module.css";
 import AppNavbar from "@/components/AppNavbar/AppNavbar";
 import { Workout } from "@/lib/types";
-import { workout, workout2, workout3 } from "@/lib/data";
 import { FaPlus } from "react-icons/fa";
 import Link from "next/link";
 import api from "@/lib/api";
+import { toast } from "react-toastify";
 
 export default function Workouts() {
   const [userName, setUserName] = useState<string>("Enrico");
@@ -21,11 +21,14 @@ export default function Workouts() {
         const { data } = await api.get(`workout/user/${userId}`);
         setWorkouts(data);
       } catch (err) {
+        toast("Algo deu errado", { type: "error" });
         console.error(err);
       }
     };
 
     fetchWorkouts();
+
+    localStorage.setItem("userId", String(userId));
   }, [userId]);
 
   useEffect(() => {
@@ -89,8 +92,14 @@ export default function Workouts() {
                   </ListGroup>
                 </Card.Body>
                 <Card.Footer>
-                  <Card.Link>Edit</Card.Link>
-                  <Card.Link>Remove</Card.Link>
+                  {/* <Card.Link>Edit</Card.Link> */}
+                  {/* <Card.Link
+                    onClick={() => {
+                      deleteWorkout(workout?.id);
+                    }}
+                  >
+                    Remove
+                  </Card.Link> */}
                 </Card.Footer>
               </Card>
             ))}
@@ -98,6 +107,7 @@ export default function Workouts() {
         </Row>
         <hr />
         <Row></Row>
+        <ToastContainer></ToastContainer>
       </main>
     </>
   );

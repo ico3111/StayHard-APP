@@ -8,7 +8,7 @@ function AppNavbar() {
   return (
     <Navbar expand="sm" className="mb-3" style={{ backgroundColor: "#22c749" }}>
       <Container fluid>
-        <Navbar.Brand href="#">Stay Hard</Navbar.Brand>
+        <Navbar.Brand href="/workouts">Stay Hard</Navbar.Brand>
         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} />
         <Navbar.Offcanvas
           id={`offcanvasNavbar-expand-sm`}

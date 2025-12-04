@@ -4,7 +4,7 @@ export const workout: Workout = {
   id: 1,
   name: "peito",
   description: "treino bom, mas dor no ombro",
-  date: new Date(2025, 10, 30),
+  date: "25-10-2025",
   exercises: [
     { id: 1, name: "supino reto", sets: 4, reps: 10 },
     { id: 2, name: "supino inclinado", sets: 3, reps: 12 },
@@ -18,7 +18,7 @@ export const workout2: Workout = {
   id: 2,
   name: "costas",
   description: "treino puxado, fadiga e desânimo",
-  date: new Date(2025, 10, 20),
+  date: "25-10-2025",
   exercises: [
     { id: 4, name: "puxada aberta", sets: 4, reps: 12 },
     { id: 5, name: "remada baixa", sets: 4, reps: 10 },
@@ -33,7 +33,7 @@ export const workout3: Workout = {
   id: 3,
   name: "pernas",
   description: "treino forte, cansa bastante",
-  date: new Date(2025, 10, 10),
+  date: "25-10-2025",
   exercises: [
     { id: 8, name: "agachamento livre", sets: 4, reps: 8 },
     { id: 9, name: "leg press", sets: 4, reps: 10 },
@@ -49,7 +49,7 @@ export const workout4: Workout = {
   id: 4,
   name: "ombro",
   description: "treino leve, sem dores",
-  date: new Date(2025, 10, 5),
+  date: "25-10-2025",
   exercises: [
     { id: 12, name: "desenvolvimento", sets: 4, reps: 10 },
     { id: 13, name: "elevação lateral", sets: 3, reps: 15 },
