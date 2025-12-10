@@ -9,3 +9,12 @@
 .main {
   padding: 20px;
 }
+
+.container {
+  padding: 20px;
+  max-width: 1000px;
+  border: 1px solid gray;
+  border-radius: 8px;
+  margin: 5px;
+  margin: 0 auto;
+}

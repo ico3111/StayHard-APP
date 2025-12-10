@@ -6,7 +6,8 @@ import AppNavbar from "@/components/AppNavbar/AppNavbar";
 import { useCallback } from "react";
 import api from "@/lib/api";
 import { toast } from "react-toastify";
-import { ToastContainer } from "react-toastify/unstyled";
+import { redirect } from "next/navigation";
+import Swal from "sweetalert2";
 
 export default function WorkoutAdd() {
   const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
@@ -14,7 +15,12 @@ export default function WorkoutAdd() {
 
     const saved = localStorage.getItem("userId");
     if (!saved || saved === "0") {
-      toast("Usuário inválido", { type: "error" });
+      Swal.fire({
+        title: "Erro",
+        text: "Usuário inválido",
+        icon: "error",
+        confirmButtonText: "Cool",
+      });
       return;
     }
 
@@ -27,7 +33,11 @@ export default function WorkoutAdd() {
     const date = formData.get("date")?.toString() ?? "";
 
     if (!name || !description || !date) {
-      toast("Preencha todos os campos", { type: "warning" });
+      Swal.fire({
+        title: "Preencha todos os campos",
+        icon: "warning",
+        confirmButtonText: "Cool",
+      });
       return;
     }
 
@@ -40,16 +50,27 @@ export default function WorkoutAdd() {
       });
 
       toast("Adicionado", { type: "success" });
+      Swal.fire({
+        title: "Adicionado",
+        icon: "success",
+        confirmButtonText: "Cool",
+      });
     } catch (err) {
-      toast("Algo deu errado", { type: "error" });
+      Swal.fire({
+        title: "Algo deu errado",
+        icon: "error",
+        confirmButtonText: "Cool",
+      });
       console.error(err);
     }
+
+    redirect("/workouts");
   }, []);
 
   return (
     <>
       <AppNavbar />
-      <main className={styles.main}>
+      <main className={styles.container}>
         <Row>
           <Col>
             <h1>Add Workout</h1>
@@ -78,7 +99,7 @@ export default function WorkoutAdd() {
 
             <Form.Group className="mb-3" controlId="workoutDate">
               <Form.Label>Date</Form.Label>
-              <Form.Control name="date" type="text" placeholder="dd-mm-aaaa" />
+              <Form.Control name="date" type="date" placeholder="dd-mm-aaaa" />
             </Form.Group>
 
             <Button variant="primary" type="submit">
@@ -86,7 +107,6 @@ export default function WorkoutAdd() {
             </Button>
           </Form>
         </Row>
-        <ToastContainer></ToastContainer>
       </main>
     </>
   );

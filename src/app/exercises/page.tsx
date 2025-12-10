@@ -1,18 +1,18 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { Card, Col, ListGroup, Row, ToastContainer } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Card, ListGroup, Row, ToastContainer } from "react-bootstrap";
 import styles from "./../page.module.css";
 import AppNavbar from "@/components/AppNavbar/AppNavbar";
-import { Workout } from "@/lib/types";
+import { Exercise } from "@/lib/types";
 import { FaPlus } from "react-icons/fa";
 import Link from "next/link";
 import api from "@/lib/api";
 import Swal from "sweetalert2";
 
-export default function Workouts() {
+export default function Exercises() {
   const [userId, setUserId] = useState<number>(1);
-  const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const [exercises, setExercises] = useState<Exercise[]>([]);
 
   useEffect(() => {
     const saved = localStorage.getItem("userId");
@@ -20,10 +20,10 @@ export default function Workouts() {
     setUserId(Number(saved));
   }, []);
 
-  const fetchWorkouts = async () => {
+  const fetchExercises = async () => {
     try {
-      const { data } = await api.get(`workout/user/${userId}`);
-      setWorkouts(data);
+      const { data } = await api.get(`exercise/user/${userId}`);
+      setExercises(data);
     } catch (err) {
       Swal.fire({
         title: "Algo deu errado",
@@ -35,13 +35,13 @@ export default function Workouts() {
   };
 
   useEffect(() => {
-    fetchWorkouts();
+    fetchExercises();
     localStorage.setItem("userId", String(userId));
   }, [userId]);
 
-  const deleteWorkout = async (id: number) => {
+  const deleteExercise = async (id: number) => {
     try {
-      await api.delete(`workout/delete/${id}`);
+      await api.delete(`exercise/delete/${id}`);
       Swal.fire({
         title: "Deletado com sucesso!",
         icon: "success",
@@ -55,7 +55,7 @@ export default function Workouts() {
       });
       console.error(err);
     }
-    fetchWorkouts();
+    fetchExercises();
   };
 
   return (
@@ -63,7 +63,7 @@ export default function Workouts() {
       <AppNavbar />
       <main className={styles.main}>
         <Row>
-          <h3>Your Workouts</h3>
+          <h3>Your Exercises</h3>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
             <Card
               style={{
@@ -74,35 +74,38 @@ export default function Workouts() {
                 padding: "30px 0",
               }}
             >
-              <Link href="/workouts/add">
+              <Link href="/exercises/add">
                 <FaPlus style={{ fontSize: "5rem" }} />
               </Link>
             </Card>
 
-            {workouts?.map((workout, index) => (
+            {exercises?.map((exercise, index) => (
               <Card key={index} style={{ width: "20rem" }}>
                 <Card.Header>
-                  <Card.Title>{workout?.name}</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    {workout?.date}
-                  </Card.Subtitle>
+                  <Card.Title>{exercise?.name}</Card.Title>
                 </Card.Header>
                 <Card.Body>
-                  <Card.Text>{workout?.description}</Card.Text>
-
                   <ListGroup>
-                    {workout?.exercises.map((exercise, index) => (
-                      <ListGroup.Item key={index}>
-                        <b>{exercise?.name}</b> | {exercise?.sets} -{" "}
-                        {exercise?.reps}
-                      </ListGroup.Item>
-                    ))}
+                    <ListGroup.Item>
+                      <b>Sets: </b>
+                      {exercise?.sets}
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      <b>Reps: </b>
+                      {exercise?.reps}
+                    </ListGroup.Item>
                   </ListGroup>
                 </Card.Body>
-                <Card.Footer>
+                <Card.Footer
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div>
+                    <b>Id: </b>
+                    {exercise?.id}
+                  </div>
                   <Card.Link
                     onClick={() => {
-                      deleteWorkout(workout?.id);
+                      deleteExercise(exercise?.id);
                     }}
                   >
                     Remove

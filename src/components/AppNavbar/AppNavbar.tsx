@@ -8,7 +8,7 @@ function AppNavbar() {
   return (
     <Navbar expand="sm" className="mb-3" style={{ backgroundColor: "#22c749" }}>
       <Container fluid>
-        <Navbar.Brand href="/workouts">Stay Hard</Navbar.Brand>
+        <Navbar.Brand href="/home">Stay Hard</Navbar.Brand>
         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} />
         <Navbar.Offcanvas
           id={`offcanvasNavbar-expand-sm`}
@@ -38,15 +38,6 @@ function AppNavbar() {
               </NavDropdown>
               <Nav.Link href="/user">User</Nav.Link>
             </Nav>
-            <Form className="d-flex">
-              <Form.Control
-                type="search"
-                placeholder="Find Workouts"
-                className="me-2"
-                aria-label="Search"
-              />
-              <Button variant="outline-success">Search</Button>
-            </Form>
           </Offcanvas.Body>
         </Navbar.Offcanvas>
       </Container>
