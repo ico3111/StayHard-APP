@@ -2,21 +2,23 @@
 
 import { useState } from "react";
 import api from "@/lib/api"; // axios configurado
+import { redirect } from "next/navigation";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [password, setPassword] = useState("");
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    // 1. Envia credenciais para a rota /api/login
-    // 2. Essa rota cria o cookie HttpOnly
-    // 3. O navegador salva o cookie automaticamente
-    const res = await api.post("/login", { email, senha });
+    try {
+      await api.post("/user/login", { name: "", email, password });
+    } catch (error) {
+      console.log(error);
+      return;
+    }
 
-    // Depois disso, qualquer chamada via axios
-    // enviará o cookie HttpOnly automaticamente.
+    redirect("/home");
   }
 
   return (
@@ -24,8 +26,8 @@ export default function LoginForm() {
       <input value={email} onChange={(e) => setEmail(e.target.value)} />
       <input
         type="password"
-        value={senha}
-        onChange={(e) => setSenha(e.target.value)}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
       />
       <button type="submit">Entrar</button>
     </form>
