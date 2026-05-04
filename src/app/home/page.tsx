@@ -26,10 +26,13 @@ export default function Workouts() {
 
   // PEGA DADOS DO LOCAL STORAGE DO USUARIO (PROVISORIO)
   useEffect(() => {
-    const savedId = localStorage.getItem("userId");
-    const savedName = localStorage.getItem("userName");
-    savedId ? setUserId(Number(savedId)) : 1;
-    savedName ? setUserName(String(savedName)) : "";
+    const savedData = localStorage.getItem("user-data");
+    if (!savedData) return;
+
+    const userData = JSON.parse(savedData);
+
+    if (userData.id) setUserId(Number(userData.id));
+    if (userData.name) setUserName(String(userData.name));
   }, []);
 
   // PEGA DADOS DOS TREINOS
@@ -142,7 +145,7 @@ export default function Workouts() {
         console.error(err);
       }
     },
-    [fetchWorkouts]
+    [fetchWorkouts],
   );
 
   return (
@@ -152,24 +155,6 @@ export default function Workouts() {
         <Row>
           <Col md={8}>
             <h1>Hello, {userName}!</h1>
-          </Col>
-          <Col md={2}>
-            <input
-              type="number"
-              placeholder="User ID teste"
-              onChange={(e) => {
-                setUserId(Number(e.currentTarget.value));
-              }}
-            />
-          </Col>
-          <Col md={2}>
-            <input
-              type="text"
-              placeholder="User nome teste"
-              onChange={(e) => {
-                setUserName(e.currentTarget.value);
-              }}
-            />
           </Col>
         </Row>
         <hr />

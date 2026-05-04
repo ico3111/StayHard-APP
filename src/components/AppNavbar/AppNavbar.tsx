@@ -36,7 +36,13 @@ function AppNavbar() {
                 <NavDropdown.Item href="/exercises">View</NavDropdown.Item>
                 <NavDropdown.Item href="/exercises/add">Add</NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link href="/user">User</Nav.Link>
+
+              <NavDropdown
+                title="User"
+                id={`offcanvasNavbarDropdown-expand-sm`}
+              >
+                <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
+              </NavDropdown>
             </Nav>
           </Offcanvas.Body>
         </Navbar.Offcanvas>
