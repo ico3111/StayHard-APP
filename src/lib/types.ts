@@ -21,3 +21,10 @@ export interface User {
   email: string;
   passwordHash: string;
 }
+
+export type ButtonVariant =
+  | "primary"
+  | "success"
+  | "danger"
+  | "warning"
+  | "outline";

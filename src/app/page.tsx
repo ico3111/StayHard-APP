@@ -1,30 +1,41 @@
 "use client";
 
-import { Button, Col, Row } from "react-bootstrap";
-import styles from "./page.module.css";
-import AppNavbar from "@/components/AppNavbar/AppNavbar";
+import Navbar from "@/components/Navbar/Navbar";
+import { Col, Container, Divider, LinkBtn, Row } from "@/styles/styles";
+import { FaPlus } from "react-icons/fa";
 
 export default function Home() {
   return (
     <>
-      <AppNavbar />
-      <main className={styles.main}>
+      <Navbar />
+      <Container>
         <Row>
           <Col>
             <h1>Stay Hard APP</h1>
           </Col>
+        </Row>
+        <Row>
           <Col>
             <p>Keep your workouts and exercises organized here!</p>
           </Col>
         </Row>
+        <br />
+        <Divider />
         <Row>
-          <Col>
-            <Button variant="info" href="/login">
+          <Col md={6}>
+            <LinkBtn href="/login">
+              <FaPlus fontSize={14} />
               Login
-            </Button>
+            </LinkBtn>
+          </Col>
+          <Col md={6}>
+            <LinkBtn href="/register">
+              <FaPlus fontSize={14} />
+              Register
+            </LinkBtn>
           </Col>
         </Row>
-      </main>
+      </Container>
     </>
   );
 }

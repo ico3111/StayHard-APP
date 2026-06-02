@@ -1,12 +1,12 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import api from "@/lib/api"; // axios configurado
 import { redirect } from "next/navigation";
-import AppNavbar from "@/components/AppNavbar/AppNavbar";
-import { Button, Col, Form, Row } from "react-bootstrap";
-import styles from "./../page.module.css";
 import Swal from "sweetalert2";
+import Navbar from "@/components/Navbar/Navbar";
+import { Col, Container, FormInput, FormLabel, Row } from "@/styles/styles";
+import Button from "@/components/Button/Button";
 
 export default function LoginForm() {
   const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,47 +40,47 @@ export default function LoginForm() {
 
   return (
     <>
-      <AppNavbar />
-      <main className={styles.container}>
-        <Form onSubmit={onSubmit}>
+      <Navbar />
+      <Container>
+        <form onSubmit={onSubmit}>
           <Row className="mb-5">
             <Col md={12}>
               <h2>Login</h2>
             </Col>
           </Row>
+          <br />
           <Row className="mb-2">
             <Col md={12}>
-              <Form.Group className="mb-3" controlId="email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
+              <div className="mb-3">
+                <FormLabel>Email</FormLabel>
+                <FormInput
                   name="email"
                   type="email"
                   placeholder="Enter your email"
                 />
-              </Form.Group>
+              </div>
             </Col>
           </Row>
           <Row className="mb-2">
             <Col md={12}>
-              <Form.Group className="mb-3" controlId="password">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
+              <div className="mb-3">
+                <FormLabel>Password</FormLabel>
+                <FormInput
                   name="password"
                   type="password"
                   placeholder="Enter your password"
                 />
-              </Form.Group>
+              </div>
             </Col>
           </Row>
+          <br />
           <Row>
             <Col md={12}>
-              <Button variant="success" type="submit">
-                Entrar
-              </Button>
+              <Button type="submit">Entrar</Button>
             </Col>
           </Row>
-        </Form>
-      </main>
+        </form>
+      </Container>
     </>
   );
 }

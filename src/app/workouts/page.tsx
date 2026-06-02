@@ -1,23 +1,37 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { Card, Col, ListGroup, Row, ToastContainer } from "react-bootstrap";
-import styles from "./../page.module.css";
-import AppNavbar from "@/components/AppNavbar/AppNavbar";
+import { useEffect, useState } from "react";
+import Navbar from "@/components/Navbar/Navbar";
+import WorkoutCard from "@/components/WorkoutCard/WorkoutCard";
+import LinkCard from "@/components/LinkCard/page";
 import { Workout } from "@/lib/types";
-import { FaPlus } from "react-icons/fa";
-import Link from "next/link";
 import api from "@/lib/api";
 import Swal from "sweetalert2";
+import { FaPlus } from "react-icons/fa";
+import {
+  Container,
+  Divider,
+  LinkBtn,
+  Section,
+  SectionHeader,
+  SectionTitle,
+} from "@/styles/styles";
+import { CardsGrid } from "./../home/styles";
 
 export default function Workouts() {
+  const [userName, setUserName] = useState("User");
   const [userId, setUserId] = useState<number>(1);
   const [workouts, setWorkouts] = useState<Workout[]>([]);
 
   useEffect(() => {
-    const saved = localStorage.getItem("userId");
+    const savedData = localStorage.getItem("user-data");
 
-    setUserId(Number(saved));
+    if (!savedData) return;
+
+    const userData = JSON.parse(savedData);
+
+    if (userData.id) setUserId(Number(userData.id));
+    if (userData.name) setUserName(String(userData.name));
   }, []);
 
   const fetchWorkouts = async () => {
@@ -28,91 +42,73 @@ export default function Workouts() {
       Swal.fire({
         title: "Algo deu errado",
         icon: "error",
-        confirmButtonText: "Cool",
+        confirmButtonText: "Ok",
       });
+
       console.error(err);
     }
   };
 
   useEffect(() => {
     fetchWorkouts();
-    localStorage.setItem("userId", String(userId));
   }, [userId]);
 
   const deleteWorkout = async (id: number) => {
     try {
       await api.delete(`workout/delete/${id}`);
+
       Swal.fire({
         title: "Deletado com sucesso!",
         icon: "success",
         confirmButtonText: "Ok",
       });
+
+      fetchWorkouts();
     } catch (err) {
       Swal.fire({
         title: "Algo deu errado",
         icon: "error",
         confirmButtonText: "Ok",
       });
+
       console.error(err);
     }
-    fetchWorkouts();
   };
 
   return (
     <>
-      <AppNavbar />
-      <main className={styles.main}>
-        <Row>
-          <h3>Your Workouts</h3>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-            <Card
-              style={{
-                width: "20rem",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "30px 0",
-              }}
-            >
-              <Link href="/workouts/add">
-                <FaPlus style={{ fontSize: "5rem" }} />
-              </Link>
-            </Card>
+      <Navbar userName={userName} />
 
-            {workouts?.map((workout, index) => (
-              <Card key={index} style={{ width: "20rem" }}>
-                <Card.Header>
-                  <Card.Title>{workout?.name}</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    {workout?.date}
-                  </Card.Subtitle>
-                </Card.Header>
-                <Card.Body>
-                  <Card.Text>{workout?.description}</Card.Text>
+      <Container>
+        <Section>
+          <SectionHeader>
+            <SectionTitle>Seus Treinos</SectionTitle>
 
-                  <ListGroup>
-                    {workout?.exercises.map((exercise, index) => (
-                      <ListGroup.Item key={index}>
-                        <b>{exercise?.name}</b> | {exercise?.sets} -{" "}
-                        {exercise?.reps}
-                      </ListGroup.Item>
-                    ))}
-                  </ListGroup>
-                </Card.Body>
-                <Card.Footer>
-                  <Card.Link
-                    onClick={() => {
-                      deleteWorkout(workout?.id);
-                    }}
-                  >
-                    Remove
-                  </Card.Link>
-                </Card.Footer>
-              </Card>
+            <LinkBtn href="/workouts/add">
+              <FaPlus fontSize={14} />
+              Novo Treino
+            </LinkBtn>
+          </SectionHeader>
+
+          <Divider />
+
+          <CardsGrid>
+            {workouts.map((workout) => (
+              <WorkoutCard
+                key={workout.id}
+                id={workout.id}
+                name={workout.name}
+                date={workout.date}
+                description={workout.description}
+                exercises={workout.exercises}
+                deleteWorkout={deleteWorkout}
+              />
             ))}
-          </div>
-        </Row>
-      </main>
+
+            <LinkCard link="/workouts/add" text="Adicionar treino" isAdd />
+          </CardsGrid>
+        </Section>
+      </Container>
     </>
   );
 }

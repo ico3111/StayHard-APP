@@ -1,13 +1,20 @@
 "use client";
 
-import { Button, Col, Form, Row } from "react-bootstrap";
-import styles from "./../../page.module.css";
-import AppNavbar from "@/components/AppNavbar/AppNavbar";
+import AppNavbar from "@/components/Navbar/Navbar";
 import { useCallback } from "react";
 import api from "@/lib/api";
 import { toast } from "react-toastify";
 import { redirect } from "next/navigation";
 import Swal from "sweetalert2";
+import {
+  Col,
+  Container,
+  FormGroup,
+  FormInput,
+  FormLabel,
+  Row,
+} from "@/styles/styles";
+import Button from "@/components/Button/Button";
 
 export default function WorkoutAdd() {
   const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
@@ -70,7 +77,7 @@ export default function WorkoutAdd() {
   return (
     <>
       <AppNavbar />
-      <main className={styles.container}>
+      <Container>
         <Row>
           <Col>
             <h1>Add Workout</h1>
@@ -78,36 +85,36 @@ export default function WorkoutAdd() {
         </Row>
 
         <Row>
-          <Form onSubmit={onSubmit}>
-            <Form.Group className="mb-3" controlId="workoutTitle">
-              <Form.Label>Title</Form.Label>
-              <Form.Control
+          <form onSubmit={onSubmit}>
+            <FormGroup>
+              <FormLabel>Title</FormLabel>
+              <FormInput
                 name="title"
                 type="text"
                 placeholder="Enter a name to the workout"
               />
-            </Form.Group>
+            </FormGroup>
 
-            <Form.Group className="mb-3" controlId="workoutDescription">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
+            <FormGroup>
+              <FormLabel>Description</FormLabel>
+              <FormInput
                 name="description"
                 type="text"
                 placeholder="Enter a description to the workout"
               />
-            </Form.Group>
+            </FormGroup>
 
-            <Form.Group className="mb-3" controlId="workoutDate">
-              <Form.Label>Date</Form.Label>
-              <Form.Control name="date" type="date" placeholder="dd-mm-aaaa" />
-            </Form.Group>
+            <FormGroup>
+              <FormLabel>Date</FormLabel>
+              <FormInput name="date" type="date" placeholder="dd-mm-aaaa" />
+            </FormGroup>
 
             <Button variant="primary" type="submit">
               Submit
             </Button>
-          </Form>
+          </form>
         </Row>
-      </main>
+      </Container>
     </>
   );
 }

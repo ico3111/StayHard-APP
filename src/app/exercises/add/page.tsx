@@ -1,19 +1,26 @@
 "use client";
 
-import { Button, Col, Form, Row } from "react-bootstrap";
-import styles from "./../../page.module.css";
-import AppNavbar from "@/components/AppNavbar/AppNavbar";
+import AppNavbar from "@/components/Navbar/Navbar";
 import { useCallback } from "react";
 import api from "@/lib/api";
-import { toast } from "react-toastify";
 import { redirect } from "next/navigation";
 import Swal from "sweetalert2";
+import {
+  Col,
+  Container,
+  FormGroup,
+  FormInput,
+  FormLabel,
+  Row,
+} from "@/styles/styles";
+import Button from "@/components/Button/Button";
 
 export default function ExerciseAdd() {
   const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const saved = localStorage.getItem("userId");
+
     if (!saved || saved === "0") {
       Swal.fire({
         title: "Erro",
@@ -38,12 +45,11 @@ export default function ExerciseAdd() {
         icon: "warning",
         confirmButtonText: "Cool",
       });
-
       return;
     }
 
     try {
-      await api.post(`exercise/create`, {
+      await api.post("exercise/create", {
         name,
         sets,
         reps,
@@ -61,6 +67,7 @@ export default function ExerciseAdd() {
         icon: "error",
         confirmButtonText: "Ok",
       });
+
       console.error(err);
     }
 
@@ -70,54 +77,49 @@ export default function ExerciseAdd() {
   return (
     <>
       <AppNavbar />
-      <main className={styles.container}>
+
+      <Container>
         <Row>
           <Col>
             <h1>Add Exercise</h1>
           </Col>
         </Row>
 
-        <Form onSubmit={onSubmit}>
-          <Row>
-            <Col md={12}>
-              <Form.Group className="mb-3" controlId="exerciseName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  name="name"
-                  type="text"
-                  placeholder="Enter a name to the exercise"
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="exerciseSets">
-                <Form.Label>Sets</Form.Label>
-                <Form.Control
-                  name="sets"
-                  type="number"
-                  placeholder="Enter a number of sets to the exercise"
-                />
-              </Form.Group>
-            </Col>
+        <Row>
+          <form onSubmit={onSubmit}>
+            <FormGroup>
+              <FormLabel>Name</FormLabel>
+              <FormInput
+                name="name"
+                type="text"
+                placeholder="Enter a name to the exercise"
+              />
+            </FormGroup>
 
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="exerciseReps">
-                <Form.Label>Reps</Form.Label>
-                <Form.Control
-                  name="reps"
-                  type="number"
-                  placeholder="Enter a number of reps to the exercise"
-                />
-              </Form.Group>
-            </Col>
-            <div style={{ display: "flex", justifyContent: "end" }}>
-              <Button variant="primary" type="submit">
-                Submit
-              </Button>
-            </div>
-          </Row>
-        </Form>
-      </main>
+            <FormGroup>
+              <FormLabel>Sets</FormLabel>
+              <FormInput
+                name="sets"
+                type="number"
+                placeholder="Enter a number of sets"
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>Reps</FormLabel>
+              <FormInput
+                name="reps"
+                type="number"
+                placeholder="Enter a number of reps"
+              />
+            </FormGroup>
+
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </form>
+        </Row>
+      </Container>
     </>
   );
 }
